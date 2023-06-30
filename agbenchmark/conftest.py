@@ -1,5 +1,7 @@
 import json
 import os
+import threading
+
 import pytest
 import shutil
 from agbenchmark.tests.regression.RegressionManager import RegressionManager
@@ -8,6 +10,17 @@ from agbenchmark.mocks.MockManager import MockManager
 import subprocess
 from agbenchmark.Challenge import Challenge
 from dotenv import load_dotenv
+import os
+import sys
+
+# Get the current working directory
+cwd = os.getcwd()
+
+# Add current directory to Python's import path
+sys.path.append(cwd)
+
+
+from benchmarks import run_task
 
 load_dotenv()
 
@@ -38,6 +51,13 @@ def workspace(config):
                 shutil.rmtree(file_path)
         except Exception as e:
             print(f"Failed to delete {file_path}. Reason: {e}")
+from pydantic import BaseModel
+
+
+class Task(BaseModel):
+    """Jsonifiable representation of a task"""
+
+    user_input: str
 
 
 def pytest_addoption(parser):
@@ -72,15 +92,27 @@ def run_agent(request, config):
 
         try:
             timeout = int(AGENT_TIMEOUT) if AGENT_TIMEOUT is not None else 60
+            run_task(Task(user_input=task))
+            try:
+                # Start task in new thread
+                thread = threading.Thread(target=task, args=())
+                thread.start()
 
-            subprocess.run(
-                ["python", "miniagi.py", task],
-                check=True,
-                cwd=path,
-                timeout=timeout
-                # text=True,
-                # capture_output=True
-            )
+                # Wait for it to finish or timeout
+                thread.join(timeout)
+
+                if thread.is_alive():
+                    # If the task is still running, raise an exception
+                    raise TimeoutException()
+
+            # subprocess.run(
+            #     ["python", "miniagi.py", task],
+            #     check=True,
+            #     cwd=path,
+            #     timeout=timeout
+            #     # text=True,
+            #     # capture_output=True
+            # )
         except subprocess.TimeoutExpired:
             print("The subprocess has exceeded the time limit and was terminated.")
 

@@ -48,9 +48,20 @@ def start(category, noreg, mock):
     if not os.path.exists(workspace_path):
         os.makedirs(workspace_path, exist_ok=True)
 
-    regression_path = os.path.abspath(
-        "agbenchmark/tests/regression/regression_tests.json"
-    )
+
+    # Get current file path
+    current_file_path = Path(__file__).resolve()
+
+    # Get current directory
+    current_directory = current_file_path.parent
+
+    # Append the new relative path
+    new_path = current_directory / "tests" / "regression" / "regression_tests.json"
+
+    # Convert new_path to absolute path string
+    regression_path = str(new_path.resolve())
+
+
     if not os.path.exists(regression_path):
         with open(regression_path, "a"):
             pass
@@ -60,7 +71,7 @@ def start(category, noreg, mock):
         print(f"{key}: {value}")
 
     print("Starting benchmark tests...", category)
-    pytest_args = ["agbenchmark", "-vs"]
+    pytest_args = [current_directory, "-vs"]
     if category:
         pytest_args.extend(
             ["-m", category]
