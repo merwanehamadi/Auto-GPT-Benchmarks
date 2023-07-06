@@ -6,16 +6,17 @@ import pytest
 from agbenchmark.challenges.memory.memory import MemoryChallenge
 
 
-class TestRememberMultipleIds(MemoryChallenge):
+class TestRememberMultipleIdsWithNoise(MemoryChallenge):
     """The first memory challenge"""
 
     def get_file_path(self) -> str:  # all tests must implement this method
         return os.path.join(
-            os.path.dirname(__file__), "remember_multiple_ids_data.json"
+            os.path.dirname(__file__), "remember_multiple_ids_with_noise_data.json"
         )
 
     @pytest.mark.depends(
-        name="test_remember_multiple_ids", depends=["test_basic_memory"]
+        name="test_remember_multiple_ids_with_noise",
+        depends=["test_remember_multiple_ids"],
     )
     def test_method(self, config: Dict[str, Any]) -> None:
         self.setup_challenge(config)
