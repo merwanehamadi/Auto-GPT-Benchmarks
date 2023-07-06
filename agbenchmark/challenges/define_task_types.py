@@ -20,6 +20,7 @@ class Ground(BaseModel):
     should_contain: Optional[List[str]] = None
     should_not_contain: Optional[List[str]] = None
     files: List[str]
+    type: str
 
 
 class ChallengeData(BaseModel):

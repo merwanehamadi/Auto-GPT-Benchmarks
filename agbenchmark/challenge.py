@@ -2,6 +2,7 @@ import glob
 import inspect
 import os
 import shutil
+import subprocess
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 
@@ -77,8 +78,7 @@ class Challenge(ABC):
         with open(workspace_dir, "r") as f:
             return f.read()
 
-    @staticmethod
-    def open_files(workspace: str, file_patterns: list) -> List[str]:
+    def get_artifacts_out(self, workspace: str, file_patterns: list) -> List[str]:
         script_dir = os.path.abspath(workspace)
         files_contents = []
 
@@ -92,8 +92,17 @@ class Challenge(ABC):
                 matching_files = [os.path.join(script_dir, file_pattern)]
 
             for file_path in matching_files:
-                with open(file_path, "r") as f:
-                    files_contents.append(f.read())
+                if self.data.ground.type == "execute_python_code":
+                    result = subprocess.run(
+                        ["python3", file_path],
+                        cwd=os.path.abspath(workspace),
+                        capture_output=True,
+                        text=True,
+                    )
+                    files_contents.append(result.stdout)
+                else:
+                    with open(file_path, "r") as f:
+                        files_contents.append(f.read())
 
         return files_contents
 
