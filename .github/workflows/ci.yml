@@ -151,7 +151,7 @@ jobs:
           pip install ../../dist/*.whl
 
           if [ "${GITHUB_EVENT_NAME}" == "schedule" ] || [ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]; then
-            curl -s https://raw.githubusercontent.com/Helicone/helicone/main/mitmproxy.sh | sudo bash -s start
+            curl -s https://raw.githubusercontent.com/Helicone/helicone/main/mitmproxy.sh | bash -s start
             agbenchmark start --maintain
           else
             agbenchmark start --maintain --mock
