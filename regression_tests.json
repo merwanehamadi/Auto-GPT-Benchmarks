@@ -7,14 +7,6 @@
         ],
         "test": "agbenchmark/challenges/memory/m1"
     },
-    "TestBasicRetrieval": {
-        "difficulty": "basic",
-        "dependencies": [
-            "TestWriteFile",
-            "TestSearch"
-        ],
-        "test": "agbenchmark/challenges/retrieval/r1"
-    },
     "TestCreateSimpleWebServer": {
         "difficulty": "basic",
         "dependencies": [],
@@ -62,20 +54,6 @@
             "TestRememberMultipleIdsWithNoise"
         ],
         "test": "agbenchmark/challenges/memory/m4"
-    },
-    "TestRetrieval2": {
-        "difficulty": "basic",
-        "dependencies": [
-            "TestBasicRetrieval"
-        ],
-        "test": "agbenchmark/challenges/retrieval/r2"
-    },
-    "TestRetrieval3": {
-        "difficulty": "basic",
-        "dependencies": [
-            "TestRetrieval2"
-        ],
-        "test": "agbenchmark/challenges/retrieval/r3"
     },
     "TestSearch": {
         "difficulty": "basic",
