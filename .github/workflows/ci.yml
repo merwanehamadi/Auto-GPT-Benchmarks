@@ -151,15 +151,14 @@ jobs:
             echo "Unknown agent name: $AGENT_NAME"
             exit 1
           fi
-          
+
           pip install ../../dist/*.whl
 
           if [ "${GITHUB_EVENT_NAME}" == "schedule" ] || [ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]; then
-            sudo apt update -y && sudo apt install curl -y
-            alias helicone_mitm="curl -s https://raw.githubusercontent.com/Helicone/helicone/main/mitmproxy.sh | bash -s"
             export HELICONE_API_KEY=${{ secrets.HELICONE_API_KEY }}
             export HELICONE_CACHE_ENABLED=true
-            sudo helicone_mitm start
+            curl -s https://raw.githubusercontent.com/Helicone/helicone/main/mitmproxy.sh | sudo bash -s start
+
             
             export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt && agbenchmark start --maintain
           else
