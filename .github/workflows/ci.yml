@@ -177,3 +177,10 @@ jobs:
         with:
           name: gpt-engineer-projects
           path: agent/gpt-engineer/projects
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.agent-name }}
+          path: agent/${{ matrix.agent-name }}/agbenchmark
