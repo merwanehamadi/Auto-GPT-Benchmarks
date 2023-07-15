@@ -135,7 +135,7 @@ jobs:
           fi
 
           pip install ../../dist/*.whl
-          
+
           if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
             agbenchmark start --maintain --mock
             agbenchmark start --improve --mock
@@ -146,7 +146,7 @@ jobs:
             agbenchmark start --mock --category=memory
             agbenchmark start --mock --category=iterate
           else
-            curl -s https://raw.githubusercontent.com/Helicone/helicone/main/mitmproxy.sh | bash -s start
+            curl -s https://raw.githubusercontent.com/Helicone/helicone/mitm-lock-file/mitmproxy.sh | bash -s start
             agbenchmark start --maintain
           fi
         env:
@@ -158,7 +158,6 @@ jobs:
           REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
           HELICONE_CACHE_ENABLED: true
           HELICONE_PROPERTY_AGENT: ${{ matrix.agent-name }}
-
 
       - name: Upload reports
         if: always()
