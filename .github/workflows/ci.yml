@@ -146,7 +146,7 @@ jobs:
             agbenchmark start --mock --category=memory
             agbenchmark start --mock --category=iterate
           else
-            curl -s https://raw.githubusercontent.com/Helicone/helicone/mitm-lock-file/mitmproxy.sh | bash -s start
+            curl -s https://raw.githubusercontent.com/Helicone/helicone/main/mitmproxy.sh | bash -s start
             agbenchmark start --maintain
           fi
         env:
