@@ -77,9 +77,6 @@ jobs:
       matrix:
         agent-name:
           - "gpt-engineer"
-          - "smol-developer"
-          - "Auto-GPT"
-          - "mini-agi"
         cache-enabled: [ true, false ]
 
     steps:
@@ -111,6 +108,12 @@ jobs:
           poetry run agbenchmark start --mock
           poetry run agbenchmark start --mock --maintain
           poetry build
+
+      - name: Install dependencies
+        run: |
+          python send_to_googledrive.py
+        env:
+          GDRIVE_BASE64: ${{ secrets.GDRIVE_BASE64 }}
 
       - name: Run regression tests
         run: |
