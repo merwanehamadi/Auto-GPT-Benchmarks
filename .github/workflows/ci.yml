@@ -76,10 +76,6 @@ jobs:
       fail-fast: false
       matrix:
         agent-name:
-          - "gpt-engineer"
-          - "smol-developer"
-          - "Auto-GPT"
-          - "mini-agi"
           - "BabyAGI"
         cache-enabled: [ true, false ]
 
